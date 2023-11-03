@@ -36,7 +36,12 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Container(
           margin: const EdgeInsets.only(top: 40),
-          child: Center(child: RepaintBoundary(key: screenShotKey, child: const FlutterLogo(size: 60,)))),
+          child: Center(
+              child: RepaintBoundary(
+                  key: screenShotKey,
+                  child: const FlutterLogo(
+                    size: 60,
+                  )))),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _takeScreenShot(context, screenShotKey);
@@ -65,4 +70,3 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 }
-
