@@ -108,6 +108,8 @@ class ScreenShotHelperUtil {
   }
 
   ///get the random number
+  ///for the file saving purposes
+  ///to make the file name unique
   String _getRandomNumber() {
     int range = 9999;
     Random random = Random();
