@@ -5,3 +5,11 @@
 ## 0.0.2
 
 * Example added
+
+## 0.0.3
+
+* Readme updated
+
+# 0.0.4
+
+* Change log updated
