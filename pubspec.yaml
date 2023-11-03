@@ -1,6 +1,6 @@
 name: screenshot_juni1289
-description: A Flutter widget that can take screen shots
-version: 0.0.1
+description: A Flutter widget that can take screen shots, keeps track of permissions by itself. You just have to add permissions on native level for Android & iOS
+version: 0.0.2
 homepage: https://github.com/juni12891226/screenshot-juni1289
 
 environment:

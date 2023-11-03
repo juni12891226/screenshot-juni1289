@@ -18,11 +18,35 @@ A Flutter widget that can take screen shots
 ## Basic Setup
 
 ```
-
+    RepaintBoundary(key: screenShotKey, child: const FlutterLogo(size: 60,))
+    
+    ScreenShotHelperUtil.instance.takeAndSaveScreenShot(
+        context: context,
+        repaintBoundaryKey: screenShotKey,
+        filename: ScreenShotHelperUtil.instance.getFileNameForSave(fileNamePrefix: "screenshot_"),
+        imageToSaveCustomDirectoryName: "ScreenShot_juni1289",
+        onScreenShotSavedCallback: (ScreenShotHelperModel? screenShotHelperModel) {
+          if (screenShotHelperModel != null) {
+            //all good here
+            if (screenShotHelperModel.saveSuccess) {
+              //screen shot taken
+              if (screenShotHelperModel.savedImagePath != null && screenShotHelperModel.savedImagePath!.isNotEmpty) {
+                //the screen shot is finally saved, bingo!
+              }
+            }
+          }
+        });
 ```
 
 ## Signature Example
 
 ```
-
+    Future<void> takeAndSaveScreenShot(
+      {required BuildContext context,
+      required GlobalKey repaintBoundaryKey,
+      required String filename,
+      required String imageToSaveCustomDirectoryName,
+      required Function(ScreenShotHelperModel? screenShotHelperModel) onScreenShotSavedCallback,
+      String? androidSystemDirectoryPath,
+      double? pixelRatio}) async
 ```
