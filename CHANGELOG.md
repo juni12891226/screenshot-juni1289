@@ -13,3 +13,7 @@
 ## 0.0.4
 
 * Change log updated
+
+## 0.0.5
+
+* onErrorCallback exception handling added in debugPrint Logs
