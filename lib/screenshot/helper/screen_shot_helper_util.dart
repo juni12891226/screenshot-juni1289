@@ -56,7 +56,7 @@ class ScreenShotHelperUtil {
                         ScreenShotHelperModel(saveSuccess: true, savedImagePath: imagePath, permissionsResultsEnum: PermissionsResultsEnums.granted, errorReason: null));
                   }, onError: (e) {
                     onScreenShotSavedCallback(ScreenShotHelperModel(
-                        saveSuccess: false, savedImagePath: null, permissionsResultsEnum: PermissionsResultsEnums.granted, errorReason: "Error Code 0120"));
+                        saveSuccess: false, savedImagePath: null, permissionsResultsEnum: PermissionsResultsEnums.granted, errorReason: "Error Code 0120:::$e"));
                   });
                 } else {
                   directory.create(recursive: true).then((Directory createdDirectory) {
@@ -66,7 +66,7 @@ class ScreenShotHelperUtil {
                           ScreenShotHelperModel(savedImagePath: imagePath, permissionsResultsEnum: PermissionsResultsEnums.granted, errorReason: null, saveSuccess: true));
                     }, onError: (e) {
                       onScreenShotSavedCallback(ScreenShotHelperModel(
-                          saveSuccess: false, savedImagePath: null, permissionsResultsEnum: PermissionsResultsEnums.granted, errorReason: "Error Code 0122"));
+                          saveSuccess: false, savedImagePath: null, permissionsResultsEnum: PermissionsResultsEnums.granted, errorReason: "Error Code 0122:::$e"));
                     });
                   });
                 }
