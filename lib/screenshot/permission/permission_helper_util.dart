@@ -42,7 +42,7 @@ class PermissionHelperUtil {
       permissionHandlerHelperModel = PermissionHandlerHelperModel(permissionsResult: PermissionsResultsEnums.isRestricted, permissionName: permissionName);
     }
 
-    if (Platform.isIOS || (androidVersion != 9999) && androidVersion >= 33) {
+    if (Platform.isIOS || (androidVersion != 9999) && androidVersion > 33) {
       if (statuses.isNotEmpty && statuses[Permission.photos] != null && statuses[Permission.photos]!.isGranted) {
         permissionHandlerHelperModel = PermissionHandlerHelperModel(permissionsResult: PermissionsResultsEnums.granted, permissionName: permissionName);
       } else if (statuses.isNotEmpty && statuses[Permission.photos] != null && statuses[Permission.photos]!.isDenied) {
