@@ -51,32 +51,32 @@ class ScreenShotHelperUtil {
           if (permissionHandlerHelperModel != null) {
             if (permissionHandlerHelperModel.permissionsResult ==
                 PermissionsResultsEnums.granted) {
-              Directory? directoryPath;
-              if (Platform.isIOS) {
-                directoryPath = await getApplicationDocumentsDirectory();
-              } else {
-                directoryPath = await getExternalStorageDirectory();
-              }
-
               String newPath = await createDirectory(
                   context: context,
                   androidDirectoryPath: androidSystemDirectoryPath);
-
-              var directory = directoryPath != null &&
-                      directoryPath.path.isNotEmpty
-                  ? Directory(
-                      '${directoryPath.path}/$imageToSaveCustomDirectoryName')
-                  : Directory('$newPath/$imageToSaveCustomDirectoryName');
-
+              var directory =
+                  Directory('$newPath/$imageToSaveCustomDirectoryName');
               directory.exists().then((bool isExists) {
                 if (isExists) {
                   final imagePath = "${directory.path}/$filename";
-                  File(imagePath).writeAsBytes(pngBytes).then((value) {
-                    onScreenShotSavedCallback(ScreenShotHelperModel(
-                        saveSuccess: true,
-                        savedImagePath: imagePath,
-                        permissionsResultsEnum: PermissionsResultsEnums.granted,
-                        errorReason: null));
+                  File(imagePath).writeAsBytes(pngBytes).then((File file) {
+                    file.exists().then((bool exists) {
+                      if (exists) {
+                        onScreenShotSavedCallback(ScreenShotHelperModel(
+                            saveSuccess: true,
+                            savedImagePath: imagePath,
+                            permissionsResultsEnum:
+                                PermissionsResultsEnums.granted,
+                            errorReason: null));
+                      } else {
+                        onScreenShotSavedCallback(ScreenShotHelperModel(
+                            saveSuccess: false,
+                            savedImagePath: null,
+                            permissionsResultsEnum:
+                                PermissionsResultsEnums.granted,
+                            errorReason: "Error Code 32199"));
+                      }
+                    });
                   }, onError: (e) {
                     onScreenShotSavedCallback(ScreenShotHelperModel(
                         saveSuccess: false,
