@@ -51,11 +51,23 @@ class ScreenShotHelperUtil {
           if (permissionHandlerHelperModel != null) {
             if (permissionHandlerHelperModel.permissionsResult ==
                 PermissionsResultsEnums.granted) {
+              Directory? directoryPath;
+              if (Platform.isIOS) {
+                directoryPath = await getApplicationDocumentsDirectory();
+              } else {
+                directoryPath = await getExternalStorageDirectory();
+              }
+
               String newPath = await createDirectory(
                   context: context,
                   androidDirectoryPath: androidSystemDirectoryPath);
-              var directory =
-                  Directory('$newPath/$imageToSaveCustomDirectoryName');
+
+              var directory = directoryPath != null &&
+                      directoryPath.path.isNotEmpty
+                  ? Directory(
+                      '${directoryPath.path}/$imageToSaveCustomDirectoryName')
+                  : Directory('$newPath/$imageToSaveCustomDirectoryName');
+
               directory.exists().then((bool isExists) {
                 if (isExists) {
                   final imagePath = "${directory.path}/$filename";
