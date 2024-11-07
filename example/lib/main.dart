@@ -51,18 +51,22 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void _takeScreenShot(BuildContext context, GlobalKey<State<StatefulWidget>> screenShotKey) {
+  void _takeScreenShot(
+      BuildContext context, GlobalKey<State<StatefulWidget>> screenShotKey) {
     ScreenShotHelperUtil.instance.takeAndSaveScreenShot(
         context: context,
         repaintBoundaryKey: screenShotKey,
-        filename: ScreenShotHelperUtil.instance.getFileNameForSave(fileNamePrefix: "screenshot_"),
+        filename: ScreenShotHelperUtil.instance
+            .getFileNameForSave(fileNamePrefix: "screenshot_"),
         imageToSaveCustomDirectoryName: "ScreenShot_juni1289",
-        onScreenShotSavedCallback: (ScreenShotHelperModel? screenShotHelperModel) {
+        onScreenShotSavedCallback:
+            (ScreenShotHelperModel? screenShotHelperModel) {
           if (screenShotHelperModel != null) {
             //all good here
             if (screenShotHelperModel.saveSuccess) {
               //screen shot taken
-              if (screenShotHelperModel.savedImagePath != null && screenShotHelperModel.savedImagePath!.isNotEmpty) {
+              if (screenShotHelperModel.savedImagePath != null &&
+                  screenShotHelperModel.savedImagePath!.isNotEmpty) {
                 //the screen shot is finally saved, bingo!
               }
             }

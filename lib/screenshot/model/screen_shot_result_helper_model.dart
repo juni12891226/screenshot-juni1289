@@ -12,5 +12,9 @@ class ScreenShotHelperModel {
   ///[errorReason] reason string for any error that occurred
   ///[permissionsResultsEnum] permission results
   ///[saveSuccess] true | false about the screen shot save success | failure
-  ScreenShotHelperModel({this.savedImagePath, this.errorReason, this.permissionsResultsEnum, required this.saveSuccess});
+  ScreenShotHelperModel(
+      {this.savedImagePath,
+      this.errorReason,
+      this.permissionsResultsEnum,
+      required this.saveSuccess});
 }

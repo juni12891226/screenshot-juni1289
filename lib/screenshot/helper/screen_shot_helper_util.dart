@@ -32,67 +32,107 @@ class ScreenShotHelperUtil {
       required GlobalKey repaintBoundaryKey,
       required String filename,
       required String imageToSaveCustomDirectoryName,
-      required Function(ScreenShotHelperModel? screenShotHelperModel) onScreenShotSavedCallback,
+      required Function(ScreenShotHelperModel? screenShotHelperModel)
+          onScreenShotSavedCallback,
       String? androidSystemDirectoryPath,
       double? pixelRatio}) async {
-    if (repaintBoundaryKey.currentContext != null && repaintBoundaryKey.currentContext!.findRenderObject() != null) {
-      RenderRepaintBoundary boundary = repaintBoundaryKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+    if (repaintBoundaryKey.currentContext != null &&
+        repaintBoundaryKey.currentContext!.findRenderObject() != null) {
+      RenderRepaintBoundary boundary = repaintBoundaryKey.currentContext!
+          .findRenderObject() as RenderRepaintBoundary;
       final image = await boundary.toImage(pixelRatio: pixelRatio ?? 1);
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
 
       Uint8List pngBytes;
       if (byteData != null) {
         pngBytes = byteData.buffer.asUint8List();
-        PermissionHelperUtil.instance.checkIfStoragePermissionGranted().then((PermissionHandlerHelperModel? permissionHandlerHelperModel) async {
+        PermissionHelperUtil.instance.checkIfStoragePermissionGranted().then(
+            (PermissionHandlerHelperModel? permissionHandlerHelperModel) async {
           if (permissionHandlerHelperModel != null) {
-            if (permissionHandlerHelperModel.permissionsResult == PermissionsResultsEnums.granted) {
-              String newPath = await createDirectory(context: context, androidDirectoryPath: androidSystemDirectoryPath);
-              var directory = Directory('$newPath/$imageToSaveCustomDirectoryName');
+            if (permissionHandlerHelperModel.permissionsResult ==
+                PermissionsResultsEnums.granted) {
+              String newPath = await createDirectory(
+                  context: context,
+                  androidDirectoryPath: androidSystemDirectoryPath);
+              var directory =
+                  Directory('$newPath/$imageToSaveCustomDirectoryName');
               directory.exists().then((bool isExists) {
                 if (isExists) {
                   final imagePath = "${directory.path}/$filename";
                   File(imagePath).writeAsBytes(pngBytes).then((value) {
-                    onScreenShotSavedCallback(
-                        ScreenShotHelperModel(saveSuccess: true, savedImagePath: imagePath, permissionsResultsEnum: PermissionsResultsEnums.granted, errorReason: null));
+                    onScreenShotSavedCallback(ScreenShotHelperModel(
+                        saveSuccess: true,
+                        savedImagePath: imagePath,
+                        permissionsResultsEnum: PermissionsResultsEnums.granted,
+                        errorReason: null));
                   }, onError: (e) {
                     onScreenShotSavedCallback(ScreenShotHelperModel(
-                        saveSuccess: false, savedImagePath: null, permissionsResultsEnum: PermissionsResultsEnums.granted, errorReason: "Error Code 0120:::$e"));
+                        saveSuccess: false,
+                        savedImagePath: null,
+                        permissionsResultsEnum: PermissionsResultsEnums.granted,
+                        errorReason: "Error Code 0120:::$e"));
                   });
                 } else {
-                  directory.create(recursive: true).then((Directory createdDirectory) {
+                  directory
+                      .create(recursive: true)
+                      .then((Directory createdDirectory) {
                     final imagePath = "${createdDirectory.path}/$filename";
                     File(imagePath).writeAsBytes(pngBytes).then((value) {
-                      onScreenShotSavedCallback(
-                          ScreenShotHelperModel(savedImagePath: imagePath, permissionsResultsEnum: PermissionsResultsEnums.granted, errorReason: null, saveSuccess: true));
+                      onScreenShotSavedCallback(ScreenShotHelperModel(
+                          savedImagePath: imagePath,
+                          permissionsResultsEnum:
+                              PermissionsResultsEnums.granted,
+                          errorReason: null,
+                          saveSuccess: true));
                     }, onError: (e) {
                       onScreenShotSavedCallback(ScreenShotHelperModel(
-                          saveSuccess: false, savedImagePath: null, permissionsResultsEnum: PermissionsResultsEnums.granted, errorReason: "Error Code 0122:::$e"));
+                          saveSuccess: false,
+                          savedImagePath: null,
+                          permissionsResultsEnum:
+                              PermissionsResultsEnums.granted,
+                          errorReason: "Error Code 0122:::$e"));
                     });
                   });
                 }
               });
-            } else if (permissionHandlerHelperModel.permissionsResult == PermissionsResultsEnums.denied) {
-              onScreenShotSavedCallback(ScreenShotHelperModel(
-                  saveSuccess: false, savedImagePath: null, permissionsResultsEnum: PermissionsResultsEnums.denied, errorReason: "Permission is denied!"));
-            } else if (permissionHandlerHelperModel.permissionsResult == PermissionsResultsEnums.permanentlyDenied) {
+            } else if (permissionHandlerHelperModel.permissionsResult ==
+                PermissionsResultsEnums.denied) {
               onScreenShotSavedCallback(ScreenShotHelperModel(
                   saveSuccess: false,
                   savedImagePath: null,
-                  permissionsResultsEnum: PermissionsResultsEnums.permanentlyDenied,
+                  permissionsResultsEnum: PermissionsResultsEnums.denied,
+                  errorReason: "Permission is denied!"));
+            } else if (permissionHandlerHelperModel.permissionsResult ==
+                PermissionsResultsEnums.permanentlyDenied) {
+              onScreenShotSavedCallback(ScreenShotHelperModel(
+                  saveSuccess: false,
+                  savedImagePath: null,
+                  permissionsResultsEnum:
+                      PermissionsResultsEnums.permanentlyDenied,
                   errorReason: "Permission is permanently denied!"));
             }
           } else {
-            onScreenShotSavedCallback(
-                ScreenShotHelperModel(saveSuccess: false, savedImagePath: null, permissionsResultsEnum: null, errorReason: "Permission helper model is null!"));
+            onScreenShotSavedCallback(ScreenShotHelperModel(
+                saveSuccess: false,
+                savedImagePath: null,
+                permissionsResultsEnum: null,
+                errorReason: "Permission helper model is null!"));
           }
         });
       } else {
-        onScreenShotSavedCallback(
-            ScreenShotHelperModel(saveSuccess: false, savedImagePath: null, permissionsResultsEnum: null, errorReason: "Image is null, Error Code 0123"));
+        onScreenShotSavedCallback(ScreenShotHelperModel(
+            saveSuccess: false,
+            savedImagePath: null,
+            permissionsResultsEnum: null,
+            errorReason: "Image is null, Error Code 0123"));
       }
     } else {
       onScreenShotSavedCallback(ScreenShotHelperModel(
-          saveSuccess: false, savedImagePath: null, permissionsResultsEnum: null, errorReason: "Repaint Boundary/Current Context/Render Object is null, Error Code 0124"));
+          saveSuccess: false,
+          savedImagePath: null,
+          permissionsResultsEnum: null,
+          errorReason:
+              "Repaint Boundary/Current Context/Render Object is null, Error Code 0124"));
     }
   }
 
@@ -100,11 +140,15 @@ class ScreenShotHelperUtil {
   /// [fileNamePrefix] is required, to be appended in the start of the file name
   /// For example the [fileNamePrefix] is myfile_ then the file name returned would be myfile_(getFileNameForSaveResult)
   /// [fileExtension] is the extension of the file that needs to saved, default is .png
-  String getFileNameForSave({required String fileNamePrefix, String fileExtension = ".png"}) {
+  String getFileNameForSave(
+      {required String fileNamePrefix, String fileExtension = ".png"}) {
     if (fileExtension.startsWith(".")) {
-      return (fileNamePrefix.isNotEmpty ? fileNamePrefix : _getRandomNumber()) + (DateTime.now()).toString() + fileExtension;
+      return (fileNamePrefix.isNotEmpty ? fileNamePrefix : _getRandomNumber()) +
+          (DateTime.now()).toString() +
+          fileExtension;
     }
-    throw ScreenShotHelperException(cause: "The file extension is not correct!");
+    throw ScreenShotHelperException(
+        cause: "The file extension is not correct!");
   }
 
   ///get the random number
@@ -114,24 +158,34 @@ class ScreenShotHelperUtil {
     int range = 9999;
     Random random = Random();
 
-    return ((((random.nextInt(range) / random.nextInt(range)) * random.nextInt(range)) / random.nextInt(range) * random.nextInt(range)).toString()).replaceAll(".", "");
+    return ((((random.nextInt(range) / random.nextInt(range)) *
+                    random.nextInt(range)) /
+                random.nextInt(range) *
+                random.nextInt(range))
+            .toString())
+        .replaceAll(".", "");
   }
 
   ///To create the directory for saving the file
   ///[context] is required
   ///[androidDirectoryPath] is optional and default is Download directory path | if you want another android directory
   ///For iOS the directory is Application Documents Directory
-  Future<String> createDirectory({required BuildContext context, String? androidDirectoryPath}) async {
+  Future<String> createDirectory(
+      {required BuildContext context, String? androidDirectoryPath}) async {
     String pathToDirectory = "";
     if (Platform.isAndroid) {
       //for android
-      pathToDirectory = Directory(androidDirectoryPath ?? '/storage/emulated/0/Download').path;
+      pathToDirectory =
+          Directory(androidDirectoryPath ?? '/storage/emulated/0/Download')
+              .path;
     } else if (Platform.isIOS) {
       //for iOS
       Directory directory = await getApplicationDocumentsDirectory();
       pathToDirectory = directory.path;
     } else {
-      throw ScreenShotHelperException(cause: "Platform exception! (only Android & iOS Platforms compatible)");
+      throw ScreenShotHelperException(
+          cause:
+              "Platform exception! (only Android & iOS Platforms compatible)");
     }
 
     bool isExists = await Directory(pathToDirectory).exists();

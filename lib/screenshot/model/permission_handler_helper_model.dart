@@ -6,5 +6,6 @@ class PermissionHandlerHelperModel {
 
   ///[permissionsResult] is required
   ///[permissionName] is required, helps in logs
-  PermissionHandlerHelperModel({required this.permissionsResult, required this.permissionName});
+  PermissionHandlerHelperModel(
+      {required this.permissionsResult, required this.permissionName});
 }
